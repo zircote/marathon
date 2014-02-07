@@ -1,5 +1,6 @@
 require.config({
   paths: {
+    "ace": "libs/ace/ace",
     "Backbone": "libs/backbone-min",
     "jsx": "libs/jsx-0.0.1",
     "JSXTransformer": "libs/JSXTransformer-0.10.0.max",
@@ -8,6 +9,9 @@ require.config({
     "Underscore": "libs/underscore-min"
   },
   shim: {
+    ace: {
+      exports: "ace"
+    },
     Backbone: {
       deps: ["Underscore", "jquery"],
       exports: "Backbone"

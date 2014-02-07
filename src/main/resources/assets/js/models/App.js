@@ -14,15 +14,18 @@ define([
   return Backbone.Model.extend({
     defaults: function() {
       return {
-        cmd: null,
-        constraints: [],
-        container: null,
+        // Required attributes
         cpus: 0.1,
-        env: {},
-        executor: "",
         id: _.uniqueId("app_"),
         instances: 1,
         mem: 16.0,
+
+        // Optional attributes
+        cmd: null,
+        constraints: [],
+        container: null,
+        env: {},
+        executor: "",
         ports: [0],
         uris: []
       };
@@ -81,6 +84,16 @@ define([
 
       return Backbone.Model.prototype.save.call(
         this, allowedAttrs, options);
+    },
+    stringify: function(space) {
+      return JSON.stringify(
+        this.attributes,
+        function(k, v) {
+          // Omit read-only attributes so the resulting string can be copied and
+          // pasted as a command line argument.
+          if (k === "" || READ_ONLY_ATTRIBUTES.indexOf(k) < 0) return v;
+        },
+        space);
     },
     validate: function(attrs, options) {
       var errors = [];

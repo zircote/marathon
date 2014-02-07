@@ -8,7 +8,8 @@ define([
   return React.createClass({
     getDefaultProps: function() {
       return {
-        onTabClick: noop
+        onTabClick: noop,
+        type: "tabs"
       };
     },
     onTabClick: function(id, event) {
@@ -29,7 +30,7 @@ define([
       }, this);
 
       return (
-        <ul className="nav nav-tabs">
+        <ul className={"nav nav-" + this.props.type}>
           {tabs}
         </ul>
       );

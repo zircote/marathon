@@ -44,10 +44,21 @@ hr {
   border-color: #333;
 }
 
+.modal-body hr {
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
 dt,
 th {
   color: #B8E8EF;
   font-weight: 200;
+}
+
+pre {
+  background-color: #333;
+  border: none;
+  color: inherit;
 }
 
 .badge {
@@ -62,6 +73,10 @@ th {
 
 .badge-warning {
   background-color: #E8EF98;
+}
+
+.editor {
+  min-height: 500px;
 }
 
 .close,
@@ -105,8 +120,32 @@ th {
   color: #F98482;
 }
 
+.nav-pills {
+  margin-bottom: 10px;
+}
+
+.nav-pills > li > a {
+  color: #fff;
+}
+
+.nav-pills > li > a:hover,
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  background-color: #fff;
+  color: #333;
+}
+
+.nav-pills-sm {
+  font-size: 12px;
+}
+
+.nav-pills-sm > li > a {
+  padding: 5px 10px;
+}
+
 .nav-tabs {
-  border-bottom-color: #444;
+  border-bottom-color: #333;
   margin-bottom: 20px;
   margin-left: -20px;
   margin-right: -20px;
@@ -120,7 +159,7 @@ th {
 }
 
 .nav-tabs > li > a:hover {
-  color: #444;
+  color: #333;
 }
 
 .table > thead > tr > th {
@@ -140,7 +179,7 @@ th {
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   background-color: transparent;
-  border-color: #444;
+  border-color: #333;
   border-bottom-color: #222224;
   color: #FFF;
 }
@@ -269,4 +308,10 @@ th {
 
 .table-selectable tr > td {
   cursor: pointer;
+}
+
+/* Ace Editor
+ */
+.ace-tomorrow-night.ace-tomorrow-night-uneditable {
+  background-color: transparent;
 }

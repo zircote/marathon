@@ -53,7 +53,7 @@ define([
 
       return (
         <div className={className}>
-          <label htmlFor={fieldId} className="col-md-3 control-label">
+          <label htmlFor={fieldId} className="col-md-2 control-label">
             {this.props.label}
           </label>
           <div className="col-md-9">

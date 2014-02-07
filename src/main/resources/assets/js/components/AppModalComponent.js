@@ -2,15 +2,26 @@
 
 define([
   "React",
+  "ace",
   "jsx!components/ModalComponent",
   "jsx!components/TabPaneComponent",
   "jsx!components/TaskListComponent",
   "jsx!components/TogglableTabsComponent",
   "mixins/BackboneMixin"
-], function(React, ModalComponent, TabPaneComponent,
+], function(React, ace, ModalComponent, TabPaneComponent,
     TaskListComponent, TogglableTabsComponent, BackboneMixin) {
 
   return React.createClass({
+    componentDidMount: function() {
+      var editor = ace.edit(this.refs.editor.getDOMNode());
+      editor.setTheme("ace/theme/tomorrow_night");
+
+      var session = editor.getSession();
+      session.setValue(this.props.model.stringify(2))
+      session.setMode("ace/mode/json");
+      session.setTabSize(2);
+      session.setUseSoftTabs(true);
+    },
     destroy: function() {
       this.refs.modalComponent.destroy();
     },
@@ -113,7 +124,7 @@ define([
         });
       var containerNode = (model.get("container") == null) ?
         <dd className="text-muted">Unspecified</dd> :
-        <dd>{JSON.stringify(model.get("container"))}</dd>;
+        <dd>{JSON.stringify(model.get("container"), null, 1)}</dd>;
       var envNode = (Object.keys(model.get("env")).length === 0) ?
         <dd className="text-muted">Unspecified</dd> :
 
@@ -167,22 +178,7 @@ define([
                 onTaskToggle={this.toggleTask} />
             </TabPaneComponent>
             <TabPaneComponent id="configuration">
-              <dl className="dl-horizontal">
-                <dt>Command</dt>
-                {cmdNode}
-                <dt>Constraints</dt>
-                {constraintsNode}
-                <dt>Container</dt>
-                {containerNode}
-                <dt>Environment</dt>
-                {envNode}
-                <dt>Executor</dt>
-                {executorNode}
-                <dt>Ports</dt>
-                {portsNode}
-                <dt>URIs</dt>
-                {urisNode}
-              </dl>
+              <div className="editor" ref="editor" />
             </TabPaneComponent>
           </TogglableTabsComponent>
           <div className="modal-footer">
