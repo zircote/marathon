@@ -50,8 +50,6 @@ class AppsResource @Inject()(
   @POST
   @Timed
   def create(@Context req: HttpServletRequest, @Valid app: AppDefinition): Response = {
-    validateContainerOpts(app)
-
     maybePostEvent(req, app)
     Await.result(service.startApp(app), service.defaultWait)
     Response.created(new URI(s"${app.id}")).build
@@ -91,7 +89,6 @@ class AppsResource @Inject()(
     service.getApp(id) match {
       case Some(appDef) => {
         val updatedApp = effectiveUpdate.apply(appDef)
-        validateContainerOpts(updatedApp)
         maybePostEvent(req, updatedApp)
         Await.result(service.updateApp(id, effectiveUpdate), service.defaultWait)
         Response.noContent.build
@@ -115,16 +112,6 @@ class AppsResource @Inject()(
 
   @Path("{appId}/versions")
   def appVersionsResource() = new AppVersionsResource(service)
-
-  /**
-   * Causes a 400: Bad Request if container options are supplied
-   * with the default executor
-   */
-  private def validateContainerOpts(app: AppDefinition): Unit =
-    if ((app.executor == "" || app.executor == "//cmd") && app.container.isDefined)
-      throw new BadRequestException(
-        "Container options are not supported with the default executor"
-      )
 
   private def maybePostEvent(req: HttpServletRequest, app: AppDefinition) {
     if (eventBus.nonEmpty) {

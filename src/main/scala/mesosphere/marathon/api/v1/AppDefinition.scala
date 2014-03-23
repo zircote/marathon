@@ -77,8 +77,6 @@ case class AppDefinition(
       .addResources(memResource)
       .setVersion(version.toString)
 
-    for (c <- container) builder.setContainer(c.toProto)
-
     builder.build
   }
 
@@ -101,8 +99,11 @@ case class AppDefinition(
       instances = proto.getInstances,
       ports = proto.getPortsList.asScala,
       constraints = proto.getConstraintsList.asScala.toSet,
-      container = if (proto.hasContainer) Some(ContainerInfo(proto.getContainer))
-                  else None,
+      container = if (proto.getCmd.hasContainer) {
+                    Some(ContainerInfo(proto.getCmd.getContainer))
+                  } else {
+                    None
+                  },
       cpus = resourcesMap.get(AppDefinition.CPUS).getOrElse(this.cpus),
       mem = resourcesMap.get(AppDefinition.MEM).getOrElse(this.mem),
       env = envMap,
