@@ -14,6 +14,7 @@ import com.twitter.common.zookeeper.ZooKeeperClient
 import scala.collection.JavaConverters._
 import java.util.logging.Logger
 import java.util.Properties
+import mesosphere.marathon.dns.DnsServerService
 
 /**
  * @author Tobi Knaup
@@ -93,6 +94,7 @@ object Main extends App {
 
   run(
     classOf[HttpService],
-    classOf[MarathonSchedulerService]
+    classOf[MarathonSchedulerService],
+    classOf[DnsServerService]
   )
 }
