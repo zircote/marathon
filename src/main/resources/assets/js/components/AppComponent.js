@@ -27,7 +27,9 @@ define([
           </td>
           <td className="text-right">{model.get("mem")}</td>
           <td className="text-right">{model.get("cpus")}</td>
-          <td className={instancesClassSet}>{model.get("tasksRunning")} / {model.get("instances")}</td>
+          <td className={instancesClassSet}>
+            {model.get("tasksRunning") == null ? "-" : model.get("tasksRunning")} / {model.get("instances")}
+          </td>
         </tr>
       );
     }

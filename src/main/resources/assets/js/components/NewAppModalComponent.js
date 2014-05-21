@@ -5,9 +5,15 @@ define([
   "Underscore",
   "React",
   "mixins/BackboneMixin",
+  "models/App",
   "jsx!components/FormGroupComponent",
-  "jsx!components/ModalComponent"
-], function($, _, React, BackboneMixin, FormGroupComponent, ModalComponent) {
+  "jsx!components/ModalComponent",
+  "jsx!components/SimpleAppItem",
+  "jsx!components/TabPaneComponent",
+  "jsx!components/TogglableTabsComponent"
+], function($, _, React, BackboneMixin, App, FormGroupComponent, ModalComponent,
+     SimpleAppItem, TabPaneComponent, TogglableTabsComponent) {
+
   return React.createClass({
     destroy: function() {
       this.refs.modalComponent.destroy();
@@ -55,78 +61,109 @@ define([
         this.destroy();
       }
     },
+    installPreconfiguredApp: function(app) {
+      // Ensure successive installs of the same preconfigured app have unique
+      // IDs.
+      var attrs = _.extend({}, app, {id: _.uniqueId(app.id + "_")});
+      this.props.model.set(attrs);
+
+      if (this.props.model.isValid()) {
+        this.props.onCreate();
+        this.destroy();
+      }
+    },
+
     render: function() {
       var model = this.props.model;
 
       return (
-        <ModalComponent ref="modalComponent">
-          <form method="post" className="form-horizontal" role="form" onSubmit={this.onSubmit}>
-            <div className="modal-header">
-              <button type="button" className="close"
-                aria-hidden="true" onClick={this.destroy}>&times;</button>
-              <h3 className="modal-title">New Application</h3>
-            </div>
-            <div className="modal-body">
-              <FormGroupComponent
-                  attribute="id"
-                  label="ID"
-                  model={model}>
-                <input autoFocus required />
-              </FormGroupComponent>
-              <FormGroupComponent
-                  attribute="cpus"
-                  label="CPUs"
-                  model={model}>
-                <input min="0" step="any" type="number" required />
-              </FormGroupComponent>
-              <FormGroupComponent
-                  attribute="mem"
-                  label="Memory (MB)"
-                  model={model}>
-                <input min="0" step="any" type="number" required />
-              </FormGroupComponent>
-              <FormGroupComponent
-                  attribute="instances"
-                  label="Instances"
-                  model={model}>
-                <input min="1" step="1" type="number" required />
-              </FormGroupComponent>
-              <hr />
-              <h4>Optional Settings</h4>
-              <FormGroupComponent
-                  attribute="cmd"
-                  label="Command"
-                  model={model}>
-                <textarea style={{resize: "vertical"}} />
-              </FormGroupComponent>
-              <FormGroupComponent
-                  attribute="executor"
-                  label="Executor"
-                  model={model}>
-                <input />
-              </FormGroupComponent>
-              <FormGroupComponent
-                  attribute="ports"
-                  help="Comma-separated list of numbers. 0's (zeros) assign random ports. (Default: one random port)"
-                  label="Ports"
-                  model={model}>
-                <input />
-              </FormGroupComponent>
-              <FormGroupComponent
-                  attribute="uris"
-                  help="Comma-separated list of valid URIs."
-                  label="URIs"
-                  model={model}>
-                <input />
-              </FormGroupComponent>
-            </div>
-            <div className="modal-footer">
-              <button className="btn btn-link" type="button" onClick={this.destroy}>
-                Cancel
-              </button>
-              <input type="submit" className="btn btn-primary" value="Create" />
-            </div>
-          </form>
+        <ModalComponent ref="modalComponent" size="md">
+          <div className="modal-header">
+            <button type="button" className="close"
+              aria-hidden="true" onClick={this.destroy}>&times;</button>
+            <h3 className="modal-title">New Application</h3>
+          </div>
+          <TogglableTabsComponent className="modal-body"
+            tabs={[
+              {id: "preconfigured", text: "Preconfigured"},
+              {id: "custom", text: "Custom"}
+            ]}>
+            <TabPaneComponent id="preconfigured">
+              <ul className="list-unstyled list-inline list-inline-panels">
+                {App.preconfigured.map(function(a) {
+                  return (
+                    <SimpleAppItem
+                      app={a}
+                      key={a.id}
+                      onInstall={this.installPreconfiguredApp.bind(this, a)} />
+                  );
+                }, this)}
+              </ul>
+            </TabPaneComponent>
+            <TabPaneComponent id="custom">
+              <form method="post" className="form-horizontal" role="form" onSubmit={this.onSubmit}>
+                <h4>Required Settings</h4>
+                <FormGroupComponent
+                    attribute="id"
+                    label="ID"
+                    model={model}>
+                  <input required />
+                </FormGroupComponent>
+                <FormGroupComponent
+                    attribute="cpus"
+                    label="CPUs"
+                    model={model}>
+                  <input min="0" step="any" type="number" required />
+                </FormGroupComponent>
+                <FormGroupComponent
+                    attribute="mem"
+                    label="Memory (MB)"
+                    model={model}>
+                  <input min="0" step="any" type="number" required />
+                </FormGroupComponent>
+                <FormGroupComponent
+                    attribute="instances"
+                    label="Instances"
+                    model={model}>
+                  <input min="1" step="1" type="number" required />
+                </FormGroupComponent>
+                <hr />
+                <h4>Optional Settings</h4>
+                <FormGroupComponent
+                    attribute="cmd"
+                    label="Command"
+                    model={model}>
+                  <textarea style={{resize: "vertical"}} />
+                </FormGroupComponent>
+                <FormGroupComponent
+                    attribute="executor"
+                    label="Executor"
+                    model={model}>
+                  <input />
+                </FormGroupComponent>
+                <FormGroupComponent
+                    attribute="ports"
+                    help="Comma-separated list of numbers. 0's (zeros) assign random ports. (Default: one random port)"
+                    label="Ports"
+                    model={model}>
+                  <input />
+                </FormGroupComponent>
+                <FormGroupComponent
+                    attribute="uris"
+                    help="Comma-separated list of valid URIs."
+                    label="URIs"
+                    model={model}>
+                  <input />
+                </FormGroupComponent>
+                <div className="clearfix">
+                  <input type="submit" className="btn btn-primary pull-right" value="Create" />
+                  <button className="btn btn-link pull-right" type="button" onClick={this.destroy}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </TabPaneComponent>
+          </TogglableTabsComponent>
         </ModalComponent>
       );
     }

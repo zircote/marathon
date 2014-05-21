@@ -129,5 +129,24 @@ define([
 
       if (errors.length > 0) return errors;
     }
+  }, {
+    preconfigured: [
+      {
+        cmd: 'bash -x ./hadoop-launcher https://s3.amazonaws.com/mesosphere-binaries-public/hadoop/mr1-2.0.0-mr1-cdh4.2.1.tar.gz --conf-uris https://s3.amazonaws.com/mesosphere-binaries-public/util/conf-cdh4.tgz --lib-uris https://s3.amazonaws.com/mesosphere-maven-public/org/apache/mesos/mesos_jdk6/0.14.0/mesos_jdk6-0.14.0.jar http://mesosphere-binaries-public.s3.amazonaws.com/hadoop-mesos/hadoop-mesos-0.0.2.jar --replace "mapred-child-java-opts=-XX:+UseParallelGC -Xmx768m" "mapred-tasktracker-map-tasks-maximum=30" "mapred-tasktracker-reduce-tasks-maximum=30" "mapreduce-tasktracker-http-threads=25" "mapreduce-compress=true" "mapreduce-compress-codec=org.apache.hadoop.io.compress.SnappyCodec" "mapreduce-task-io-sort-mb=130" "mapred-attempts=6" "mapred-jobtracker-taskScheduler=org.apache.hadoop.mapred.MesosScheduler" "mapred-mesos-taskScheduler=org.apache.hadoop.mapred.FairScheduler" "mapreduce-task-io-sort-factor=35" "mapred-mesos-slot-cpus=0.85" "mapred-mesos-slot-disk=1024" "mapred-mesos-slot-mem=1024" "mapred-mesos-tasktracker-mem=1024" "mapred-mesos-total-map-slots-minimum=10" "mapred-mesos-total-reduce-slots-minimum=10"',
+        cpus: 1,
+        id: "Hadoop",
+        mem: 512,
+        ports: [50030, 8021],
+        uris: ["https://s3.amazonaws.com/mesosphere-binaries-public/util/hadoop-launcher"]
+      },
+      {
+        cmd: "./chronos/bin/demo ./chronos/config/nomail.yml ./chronos/target/chronos-1.0-SNAPSHOT.jar",
+        cpus: 0.1,
+        id: "Chronos",
+        mem: 256,
+        ports: [4400],
+        uris: ["https://s3.amazonaws.com/mesosphere-binaries-public/chronos/chronos.tgz"]
+      }
+    ]
   });
 });
