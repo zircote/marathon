@@ -9,10 +9,10 @@ define([
   return {
     componentDidMount: function() {
       this._boundForceUpdate = this.forceUpdate.bind(this, null);
-      this.getResource().on("all", this._boundForceUpdate, this);
+      this.getResource().on("add remove reset sync", this._boundForceUpdate, this);
     },
     componentWillUnmount: function() {
-      this.getResource().off("all", this._boundForceUpdate);
+      this.getResource().off("add remove reset sync", this._boundForceUpdate);
     }
   };
 });

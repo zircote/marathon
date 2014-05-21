@@ -270,3 +270,25 @@ th {
 .table-selectable tr > td {
   cursor: pointer;
 }
+
+.list-inline-panels {
+  margin-bottom: -20px; /* Compensate for ".panel" margin-bottom */
+  margin-right: -10px;  /* Compensate for ".list-inline > li" margin-right */
+}
+
+.list-inline-panels > li {
+  padding-left: 0;
+  padding-right: 0;
+  width: 200px;
+}
+
+@media (min-width: 768px) {
+  .modal-md {
+    width: 662px;
+  }
+}
+
+.panel-default {
+  background-color: transparent;
+  border-color: #444;
+}
