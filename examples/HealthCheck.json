@@ -1,0 +1,15 @@
+{
+  "id": "health",
+  "cmd": "python -m SimpleHTTPServer $PORT",
+  "mem": 50,
+  "cpus": 0.1,
+  "instances": 1,
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "initialDelay": 5,
+      "interval": 5
+    }
+  ]
+}

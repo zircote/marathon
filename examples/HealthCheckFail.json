@@ -1,0 +1,15 @@
+{
+  "id": "health-fail",
+  "cmd": "sleep 600",
+  "mem": 50,
+  "cpus": 0.1,
+  "instances": 1,
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 12,
+      "intervalSeconds": 5
+    }
+  ]
+}
