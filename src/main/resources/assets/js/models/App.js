@@ -91,7 +91,7 @@ define([
         function(k, v) {
           // Omit read-only attributes so the resulting string can be copied and
           // pasted as a command line argument.
-          if (k === "" || READ_ONLY_ATTRIBUTES.indexOf(k) < 0) return v;
+          if (k === "" || EDITABLE_ATTRIBUTES.indexOf(k) >= 0) return v;
         },
         space);
     },
