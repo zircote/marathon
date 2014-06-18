@@ -74,5 +74,7 @@
     "yui"           : false,    // Yahoo User Interface
 
     // Custom Globals
-    "globals"       : {}        // additional predefined global variables
+    "globals"       : {
+        "define"    : true // accept define as a global variable
+    }        // additional predefined global variables
 }
