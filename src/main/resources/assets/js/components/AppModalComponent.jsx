@@ -80,7 +80,6 @@ define([
     },
 
     render: function() {
-      var _this = this;
       var model = this.props.model;
       var hasHealth =
         model.get("healthChecks") != null &&
@@ -113,7 +112,7 @@ define([
 
         // Print environment variables as key value pairs like "key=value"
         Object.keys(model.get("env")).map(function(k) {
-          return <dd key={k}>{k + "=" + model.get("env")[k]}</dd>
+          return <dd key={k}>{k + "=" + model.get("env")[k]}</dd>;
         });
       var executorNode = (model.get("executor") === "") ?
         <dd className="text-muted">Unspecified</dd> :

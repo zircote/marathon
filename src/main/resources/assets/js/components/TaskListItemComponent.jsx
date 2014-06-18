@@ -2,9 +2,8 @@
 
 define([
   "React",
-  "models/Task",
-  "jsx!components/TaskDetailComponent"
-], function(React, Task, TaskDetailComponent) {
+  "models/Task"
+], function(React, Task) {
   "use strict";
 
   function buildHref(host, port) {
