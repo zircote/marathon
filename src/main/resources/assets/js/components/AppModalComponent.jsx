@@ -11,6 +11,7 @@ define([
   "jsx!components/TogglableTabsComponent"
 ], function(React, BackboneMixin, ModalComponent, StackedViewComponent, TabPaneComponent,
     TaskDetailComponent, TaskViewComponent, TogglableTabsComponent) {
+  "use strict";
 
   var STATES = {
       STATE_LOADING: 0,

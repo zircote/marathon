@@ -10,6 +10,8 @@ define([
   "jsx!components/ModalComponent"
 ], function($, _, React, BackboneMixin, App, FormGroupComponent,
       ModalComponent) {
+  "use strict";
+
 
   return React.createClass({
     mixins: [BackboneMixin],

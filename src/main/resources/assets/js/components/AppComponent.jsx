@@ -3,6 +3,8 @@
 define([
   "React"
 ], function(React) {
+  "use strict";
+
   return React.createClass({
     onClick: function() {
       this.props.onClick(this.props.model);

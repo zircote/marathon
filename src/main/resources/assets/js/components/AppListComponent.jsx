@@ -6,6 +6,8 @@ define([
   "jsx!components/AppModalComponent",
   "mixins/BackboneMixin"
 ], function(React, AppComponent, AppModalComponent, BackboneMixin) {
+  "use strict";
+
   var STATE_LOADING = 0;
   var STATE_ERROR = 1;
   var STATE_SUCCESS = 2;

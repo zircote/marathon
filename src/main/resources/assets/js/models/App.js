@@ -4,6 +4,8 @@ define([
   "models/Task",
   "models/TaskCollection"
 ], function(Backbone, _, Task, TaskCollection) {
+  "use strict";
+
   function ValidationError(attribute, message) {
     this.attribute = attribute;
     this.message = message;
@@ -49,7 +51,7 @@ define([
       };
     },
     initialize: function(options) {
-      _.bindAll(this, 'formatTaskHealthMessage');
+      _.bindAll(this, "formatTaskHealthMessage");
       // If this model belongs to a collection when it is instantiated, it has
       // already been persisted to the server.
       this.persisted = (this.collection != null);
@@ -174,7 +176,7 @@ define([
         if (!_.isString(attrs.executor) || attrs.executor.length < 1 ||
             attrs.container == null || !_.isString(attrs.container.image) ||
             attrs.container.image.length < 1 ||
-            attrs.container.image.indexOf('docker') != 0) {
+            attrs.container.image.indexOf("docker") != 0) {
           errors.push(
             new ValidationError("cmd",
               "Command must be a non-empty String if executor and container image are not provided"

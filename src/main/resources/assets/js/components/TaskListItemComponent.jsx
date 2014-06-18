@@ -5,6 +5,7 @@ define([
   "models/Task",
   "jsx!components/TaskDetailComponent"
 ], function(React, Task, TaskDetailComponent) {
+  "use strict";
 
   function buildHref(host, port) {
     return "http://" + host + ":" + port;

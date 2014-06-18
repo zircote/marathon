@@ -8,6 +8,7 @@ define([
   "jsx!components/NewAppModalComponent"
 ], function(Mousetrap, React, AppCollection, AppListComponent,
     NewAppModalComponent) {
+  "use strict";
 
   return React.createClass({
     displayName: "Marathon",
