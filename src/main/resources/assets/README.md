@@ -21,7 +21,6 @@ file, `dist/main.js`.
 
 1. Add the following to your Sublime Text User Settings
 
-[javascript]:
 		{
 			...
 			"rulers": [80], // lines no longer than 80 chars
