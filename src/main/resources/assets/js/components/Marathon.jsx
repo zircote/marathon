@@ -64,6 +64,7 @@ define([
     },
 
     render: function() {
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <div>
           <nav className="navbar navbar-inverse" role="navigation">

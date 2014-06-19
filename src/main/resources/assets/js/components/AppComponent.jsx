@@ -17,6 +17,7 @@ define([
         "badge badge-circlet": !model.allInstancesBooted()
       });
 
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         // Set `title` on cells that potentially overflow so hovering on the
         // cells will reveal their full contents.

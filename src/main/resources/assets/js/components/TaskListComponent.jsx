@@ -90,7 +90,7 @@ define([
           "clickable": true,
           "dropup": this.props.tasks.sortReverse
         });
-
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <table className="table">
           <thead>

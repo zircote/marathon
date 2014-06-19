@@ -102,6 +102,7 @@ define([
         tableClassName += " table-hover table-selectable";
       }
 
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <table className={tableClassName}>
           <colgroup>

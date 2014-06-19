@@ -97,6 +97,7 @@ define([
           </time>;
       }
 
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <tr className={className}>
           <td width="1" className="clickable" onClick={this.handleClick}>

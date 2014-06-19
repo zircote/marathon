@@ -85,7 +85,7 @@ define([
 
     render: function() {
       var model = this.state.model;
-
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <ModalComponent ref="modalComponent" onDestroy={this.props.onDestroy}>
           <form method="post" role="form" onSubmit={this.onSubmit}>
