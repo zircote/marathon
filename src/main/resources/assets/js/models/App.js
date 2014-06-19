@@ -45,7 +45,8 @@ define([
         instances: 1,
         mem: 16.0,
         ports: [0],
-        uris: []
+        uris: [],
+        versions: []
       };
     },
     initialize: function(options) {
