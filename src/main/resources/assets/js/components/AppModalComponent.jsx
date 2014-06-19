@@ -7,10 +7,11 @@ define([
   "jsx!components/StackedViewComponent",
   "jsx!components/TabPaneComponent",
   "jsx!components/TaskDetailComponent",
-  "jsx!components/AppViewComponent",
+  "jsx!components/TaskListViewComponent",
+  "jsx!components/AppConfigComponent",
   "jsx!components/TogglableTabsComponent"
 ], function(React, BackboneMixin, ModalComponent, StackedViewComponent, TabPaneComponent,
-    TaskDetailComponent, AppViewComponent, TogglableTabsComponent) {
+    TaskDetailComponent, TaskListViewComponent, AppConfigComponent, TogglableTabsComponent) {
 
   var STATES = {
       STATE_LOADING: 0,
@@ -164,7 +165,7 @@ define([
             <TabPaneComponent id="tasks">
               <StackedViewComponent
                 activeViewIndex={this.state.activeViewIndex}>
-                <AppViewComponent
+                <TaskListViewComponent
                   collection={model.tasks}
                   fetchState={this.state.fetchState}
                   fetchTasks={this.fetchTasks}
