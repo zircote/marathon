@@ -6,7 +6,7 @@ define([
 ], function(React, TaskListComponent) {
 
   return React.createClass({
-    displayName: "TaskViewComponent",
+    displayName: "AppViewComponent",
     getInitialState: function() {
       return {
         selectedTasks: {}
