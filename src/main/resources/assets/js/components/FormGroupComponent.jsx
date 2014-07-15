@@ -63,6 +63,7 @@ define([
           value: this.props.model.get(attribute)
         }
       );
+
       /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <div className={className}>

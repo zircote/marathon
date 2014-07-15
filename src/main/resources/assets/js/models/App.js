@@ -51,6 +51,7 @@ define([
         uris: []
       };
     },
+
     initialize: function(options) {
       _.bindAll(this, "formatTaskHealthMessage");
       // If this model belongs to a collection when it is instantiated, it has
@@ -69,16 +70,20 @@ define([
         }
       });
     },
+
     isNew: function() {
       return !this.persisted;
     },
+
     allInstancesBooted: function() {
       return this.get("tasksRunning") === this.get("instances");
     },
+
     formatTasksRunning: function() {
       var tasksRunning = this.get("tasksRunning");
       return tasksRunning == null ? "-" : tasksRunning;
     },
+
     formatTaskHealthMessage: function(task) {
       if (task) {
         var msg;
@@ -102,6 +107,7 @@ define([
       }
       return null;
     },
+
     /* Sends only those attributes listed in `EDITABLE_ATTRIBUTES` to prevent
      * sending immutable values like "tasksRunning" and "tasksStaged" and the
      * "version" value, which when sent prevents any other attributes from being
@@ -134,9 +140,11 @@ define([
       return Backbone.Model.prototype.save.call(
         this, allowedAttrs, options);
     },
+
     suspend: function() {
       this.save({instances: 0});
     },
+
     validate: function(attrs, options) {
       var errors = [];
 
@@ -189,6 +197,7 @@ define([
           );
         }
       }
+
       if (errors.length > 0) { return errors; }
     }
   }, {

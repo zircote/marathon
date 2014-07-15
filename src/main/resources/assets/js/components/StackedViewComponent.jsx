@@ -7,6 +7,7 @@ define([
 
   return React.createClass({
     displayName: "StackedViewComponent",
+
     render: function() {
       /* jshint trailing:false, quotmark:false, newcap:false */
       return (

@@ -3,6 +3,8 @@
 define([
   "React"
 ], function(React) {
+  "use strict";
+
   var TYPES = {
     "error": "health-dot-error",
     "warning": "health-dot-warning"
@@ -38,6 +40,7 @@ define([
         "badge-circlet-default": hasType
       });
 
+      /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <span className={classSet}>
           {healthDot}

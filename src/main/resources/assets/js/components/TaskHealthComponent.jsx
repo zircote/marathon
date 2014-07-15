@@ -8,9 +8,11 @@ define([
 
   return React.createClass({
     displayName: "TaskHealthComponent",
+
     propTypes: {
       task: React.PropTypes.object.isRequired
     },
+
     render: function() {
       var task = this.props.task;
       var healthCheckResults = task.get("healthCheckResults");
@@ -59,6 +61,7 @@ define([
           }
         });
       }
+
       /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <div className={this.props.className}>

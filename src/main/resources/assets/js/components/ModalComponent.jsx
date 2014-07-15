@@ -63,6 +63,7 @@ define([
     render: function() {
       var modalClassName =
         "modal-dialog " + modalSizeClassName(this.props.size);
+
       /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <div>
