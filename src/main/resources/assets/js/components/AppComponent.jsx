@@ -1,8 +1,9 @@
 /** @jsx React.DOM */
 
 define([
-  "React"
-], function(React) {
+  "React",
+  "jsx!components/BadgeComponent"
+], function(React, BadgeComponent) {
   "use strict";
 
   return React.createClass({
@@ -12,10 +13,6 @@ define([
 
     render: function() {
       var model = this.props.model;
-
-      var instancesClassSet = React.addons.classSet({
-        "badge badge-circlet": !model.allInstancesBooted()
-      });
 
       /* jshint trailing:false, quotmark:false, newcap:false */
       return (
@@ -31,9 +28,9 @@ define([
           <td className="text-right">{model.get("mem")}</td>
           <td className="text-right">{model.get("cpus")}</td>
           <td className="text-right">
-            <span className={instancesClassSet}>
+            <BadgeComponent types={{"warning": !model.allInstancesBooted()}}>
               {model.formatTasksRunning()} / {model.get("instances")}
-            </span>
+            </BadgeComponent>
           </td>
         </tr>
       );

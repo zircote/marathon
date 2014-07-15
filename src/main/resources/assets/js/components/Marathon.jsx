@@ -5,9 +5,10 @@ define([
   "React",
   "models/AppCollection",
   "jsx!components/AppListComponent",
+  "jsx!components/AppModalComponent",
   "jsx!components/NewAppModalComponent"
 ], function(Mousetrap, React, AppCollection, AppListComponent,
-    NewAppModalComponent) {
+    AppModalComponent, NewAppModalComponent) {
   "use strict";
 
   return React.createClass({
@@ -31,16 +32,36 @@ define([
       Mousetrap.bind("c", function() {
         this.showNewAppModal(); }.bind(this), "keyup");
       Mousetrap.bind("#", function() {
-        this.refs.appList.destroyActiveApp();
+        if (this.state.modal != null &&
+            _.isFunction(this.state.modal.destroyApp)) {
+          this.state.modal.destroyApp();
+        }
       }.bind(this));
     },
 
-    handleModalCreate: function(appModel) {
-      this.state.collection.create(appModel);
+    handleAppCreate: function(appModel, options) {
+      this.state.collection.create(appModel, options);
     },
 
     handleModalDestroy: function() {
-      this.setState({modal: null});
+      this.setState({modal: null}, function() {
+        this.refs.appList.startPolling();
+      }.bind(this));
+    },
+
+    showAppModal: function(app) {
+      if (this.state != null && this.state.modal != null &&
+          this.state.modal.isMounted()) {
+        return;
+      }
+
+      this.setState({
+        modal: React.renderComponent(
+          <AppModalComponent model={app} onDestroy={this.handleModalDestroy} />,
+          document.getElementById("lightbox"),
+          function() { this.refs.appList.stopPolling(); }.bind(this)
+        )
+      });
     },
 
     showNewAppModal: function(event) {
@@ -56,9 +77,10 @@ define([
       this.setState({
         modal: React.renderComponent(
           <NewAppModalComponent
-            onCreate={this.handleModalCreate}
+            onCreate={this.handleAppCreate}
             onDestroy={this.handleModalDestroy} />,
-          document.getElementById("lightbox")
+          document.getElementById("lightbox"),
+          function() { this.refs.appList.stopPolling(); }.bind(this)
         )
       });
     },
@@ -79,7 +101,10 @@ define([
             </div>
           </nav>
           <div className="container-fluid">
-            <AppListComponent collection={this.state.collection} ref="appList" />
+            <AppListComponent
+              collection={this.state.collection}
+              onSelectApp={this.showAppModal}
+              ref="appList" />
           </div>
         </div>
       );

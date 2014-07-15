@@ -11,9 +11,11 @@
       this.setComparator("-id");
       this.sort();
     },
+
     parse: function(response) {
       return response.apps;
     },
+
     url: "/v2/apps"
   });
 });

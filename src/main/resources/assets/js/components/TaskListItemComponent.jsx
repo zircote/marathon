@@ -2,9 +2,16 @@
 
 define([
   "React",
+<<<<<<< HEAD
   "models/Task"
 ], function(React, Task) {
   "use strict";
+=======
+  "models/Task",
+  "jsx!components/BadgeComponent",
+  "jsx!components/TaskDetailComponent"
+], function(React, Task, BadgeComponent, TaskDetailComponent) {
+>>>>>>> origin/master
 
   function buildHref(host, port) {
     return "http://" + host + ":" + port;
@@ -76,15 +83,11 @@ define([
       var task = this.props.task;
       var hasHealth = !!this.props.hasHealth;
 
-      var statusClassSet = React.addons.classSet({
-        "badge badge-circlet": task.isStaged()
-      });
-
       var taskHealth = task.getHealth();
       var healthClassSet = React.addons.classSet({
         "health-dot": true,
+        "health-dot-error": taskHealth === Task.HEALTH.UNHEALTHY,
         "health-dot-success": taskHealth === Task.HEALTH.HEALTHY,
-        "health-dot-warning": taskHealth === Task.HEALTH.UNHEALTHY,
         "health-dot-unknown": taskHealth === Task.HEALTH.UNKNOWN
       });
 
@@ -111,10 +114,10 @@ define([
             <br />
             {buildTaskAnchors(task)}
           </td>
-          <td>
-            <span className={statusClassSet}>
+          <td className="text-center">
+            <BadgeComponent types={{"warning": task.isStaged()}}>
               {task.get("status")}
-            </span>
+            </BadgeComponent>
           </td>
           <td className="text-right">{updatedAtNode}</td>
           {

@@ -12,6 +12,10 @@ define([
       ModalComponent) {
   "use strict";
 
+  function ValidationError(attribute, message) {
+    this.attribute = attribute;
+    this.message = message;
+  }
 
   return React.createClass({
     mixins: [BackboneMixin],
@@ -29,7 +33,8 @@ define([
 
     getInitialState: function() {
       return {
-        model: new App()
+        model: new App(),
+        errors: []
       };
     },
 
@@ -41,6 +46,29 @@ define([
 
     getResource: function() {
       return this.state.model;
+    },
+
+    clearValidation: function() {
+      this.setState({errors: []});
+    },
+
+    validateResponse: function(response) {
+      var errors = [];
+
+      if (response.status === 422) {
+        errors.push(
+          new ValidationError("id", "An app with this ID already exists")
+        );
+      } else if (response.status >= 500) {
+        errors.push(
+          new ValidationError("general", "Server error, could not create")
+        );
+      } else {
+        errors.push(
+          new ValidationError("general", "Creation unsuccessful")
+        );
+      }
+      this.setState({errors: errors});
     },
 
     onSubmit: function(event) {
@@ -55,7 +83,11 @@ define([
       }
 
       // URIs should be an Array of Strings.
-      if ("uris" in modelAttrs) modelAttrs.uris = modelAttrs.uris.split(",");
+      if ("uris" in modelAttrs) {
+        modelAttrs.uris = modelAttrs.uris.split(",");
+      } else {
+        modelAttrs.uris = [];
+      }
 
       // Ports should always be an Array.
       if ("ports" in modelAttrs) {
@@ -71,6 +103,7 @@ define([
       // mem, cpus, and instances are all Numbers and should be parsed as such.
       if ("mem" in modelAttrs) modelAttrs.mem = parseFloat(modelAttrs.mem);
       if ("cpus" in modelAttrs) modelAttrs.cpus = parseFloat(modelAttrs.cpus);
+      if ("disk" in modelAttrs) modelAttrs.disk = parseFloat(modelAttrs.disk);
       if ("instances" in modelAttrs) {
         modelAttrs.instances = parseInt(modelAttrs.instances, 10);
       }
@@ -78,13 +111,38 @@ define([
       this.state.model.set(modelAttrs);
 
       if (this.state.model.isValid()) {
-        this.props.onCreate(this.state.model);
-        this.destroy();
+        this.props.onCreate(
+          this.state.model,
+          {
+            error: function(model, response) {
+              this.validateResponse(response);
+              if (response.status < 300) {
+                this.clearValidation();
+                this.destroy();
+              }
+            }.bind(this),
+            success: function() {
+              this.clearValidation();
+              this.destroy();
+            }.bind(this)
+          }
+        );
       }
     },
 
     render: function() {
       var model = this.state.model;
+
+      var errors = this.state.errors;
+
+      var generalErrors = errors.filter(function(e) {
+          return (e.attribute === "general");
+        });
+
+      var errorBlock = generalErrors.map(function(error, i) {
+        return <p key={i} className="text-danger"><strong>{error.message}</strong></p>;
+      });
+
       /* jshint trailing:false, quotmark:false, newcap:false */
       return (
         <ModalComponent ref="modalComponent" onDestroy={this.props.onDestroy}>
@@ -98,7 +156,8 @@ define([
               <FormGroupComponent
                   attribute="id"
                   label="ID"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input
                   autoFocus
                   pattern={App.VALID_ID_PATTERN}
@@ -108,54 +167,66 @@ define([
               <FormGroupComponent
                   attribute="cpus"
                   label="CPUs"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input min="0" step="any" type="number" required />
               </FormGroupComponent>
               <FormGroupComponent
                   attribute="mem"
                   label="Memory (MB)"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input min="0" step="any" type="number" required />
+              </FormGroupComponent>
+              <FormGroupComponent
+                  attribute="disk"
+                  label="Disk Space (MB)"
+                  model={model}
+                  errors={errors}>
+              <input min="0" step="any" type="number" required />
               </FormGroupComponent>
               <FormGroupComponent
                   attribute="instances"
                   label="Instances"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input min="1" step="1" type="number" required />
               </FormGroupComponent>
               <hr />
-              <h4 className="text-muted">Optional Settings</h4>
+              <h4>Optional Settings</h4>
               <FormGroupComponent
                   attribute="cmd"
                   label="Command"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <textarea style={{resize: "vertical"}} />
               </FormGroupComponent>
               <FormGroupComponent
                   attribute="executor"
                   label="Executor"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input />
               </FormGroupComponent>
               <FormGroupComponent
                   attribute="ports"
                   help="Comma-separated list of numbers. 0's (zeros) assign random ports. (Default: one random port)"
                   label="Ports"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input />
               </FormGroupComponent>
               <FormGroupComponent
                   attribute="uris"
                   help="Comma-separated list of valid URIs."
                   label="URIs"
-                  model={model}>
+                  model={model}
+                  errors={errors}>
                 <input />
               </FormGroupComponent>
-            </div>
-            <div className="modal-footer">
-              <div className="pull-left">
-                <input type="submit" className="btn btn-success" value="+ Create" />
-                <button className="btn btn-default" type="button" onClick={this.destroy}>
+              <div>
+                {errorBlock}
+                <input type="submit" className="btn btn-success" value="+ Create" /> <button className="btn btn-default" type="button" onClick={this.destroy}>
                   Cancel
                 </button>
               </div>
