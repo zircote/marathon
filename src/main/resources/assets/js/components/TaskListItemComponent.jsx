@@ -2,16 +2,10 @@
 
 define([
   "React",
-<<<<<<< HEAD
-  "models/Task"
-], function(React, Task) {
-  "use strict";
-=======
   "models/Task",
-  "jsx!components/BadgeComponent",
-  "jsx!components/TaskDetailComponent"
-], function(React, Task, BadgeComponent, TaskDetailComponent) {
->>>>>>> origin/master
+  "jsx!components/BadgeComponent"
+], function(React, Task, BadgeComponent) {
+  "use strict";
 
   function buildHref(host, port) {
     return "http://" + host + ":" + port;
