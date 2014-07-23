@@ -40,7 +40,7 @@ class HttpEventActor(val subscribersKeeper: ActorRef) extends Actor with ActorLo
 
   def post(urlString: String, event: MarathonEvent) {
     log.info("Sending POST to:" + urlString)
-    val request = Post(urlString, event)
+    val request = Post(urlString, event)~>addHeader("x-mesosphere-message-type", event.eventType)
     val response = pipeline(request)
 
     response.onComplete {
